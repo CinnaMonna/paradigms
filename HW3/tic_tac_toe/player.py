@@ -6,6 +6,7 @@ class Player:
     def make_move(self) -> str:
         while True:
             self.move = input("Player {}, please make move - input number of field (1-9):\n".format(self.id))
+            print()
             try:
                 int(self.move)
                 break

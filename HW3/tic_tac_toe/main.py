@@ -1,10 +1,9 @@
 from player import Player
-
+from field import Field
 
 player_1 = Player(1)
 player_2 = Player(2)
-
-
+field = Field()
 
 def is_valid_move(move: str, taken_fields_x: set, taken_fields_0: set) -> bool:        
     if 1 <= int(move) <= 9:
@@ -41,14 +40,12 @@ def winner(taken_fields_x: set, taken_fields_0: set) -> int:
         return 2
     else:
         return 0
-    
-# def drow_field(taken_fields_x: set, taken_fields_0: set) -> None:
-
        
 def game() -> None:
     taken_fields_x = set()
     taken_fields_0 = set()
     win = 0
+    moves_count = 0
 
     while win == 0:
         valid_move_flag = False
@@ -56,8 +53,15 @@ def game() -> None:
             player_1.make_move()
             valid_move_flag = is_valid_move(player_1.move, taken_fields_x, taken_fields_0)
         taken_fields_x.add(int(player_1.move))
+        field.set_x(int(player_1.move) - 1)
+        field.drow_field()
         win = winner(taken_fields_x, taken_fields_0)
         if win != 0:
+            print("Player {} wins!".format(win))
+            break
+        moves_count += 1
+        if moves_count == 5:
+            print("Friendship wins!")
             break
 
         valid_move_flag = False
@@ -65,16 +69,19 @@ def game() -> None:
             player_2.make_move()
             valid_move_flag = is_valid_move(player_2.move, taken_fields_x, taken_fields_0)
         taken_fields_0.add(int(player_2.move))
+        field.set_0(int(player_2.move) - 1)
+        field.drow_field()
         win = winner(taken_fields_x, taken_fields_0)
         if win != 0:
+            print("Player {} wins!".format(win))
             break
 
-    print(taken_fields_x, taken_fields_0)
-    print("Player №{} wins!".format(win))
+def main():
+    print('numbering of fields:\n\
+    1 2 3\n\
+    4 5 6\n\
+    7 8 9')
+    game()
 
-
-# print('numbering of fields:\n\
-# 1 2 3\n\
-# 4 5 6\n\
-# 7 8 9')
-game()
+if __name__ == "__main__":
+    main()
